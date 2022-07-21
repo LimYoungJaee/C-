@@ -1,0 +1,147 @@
+/'
+1단계 
+--------
+N? 5
+*
+**
+***
+****
+*****
+
+2단계
+N? 5
+*****
+****
+***
+**
+*
+
+3단계
+N? 5
+    *
+   **
+  ***
+ ****
+*****
+
+4단계
+N? 5
+ *****
+  ****
+   ***
+    **
+     *
+
+
+5단계 - 마름모
+(홀수만가능)
+N? 5
+   *
+  ***
+ *****
+  ***
+   *
+   
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz09
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("1단계 : 50이하의 정수를 입력하세요.");
+            int num1 = Int32.Parse(Console.ReadLine());
+            string star1 = "";
+
+            for (int i = 1; i <= num1; i++)
+            {
+                star1 = star1 + "*";
+                Console.WriteLine(star1);
+            }
+            Console.WriteLine();
+
+            Console.Write("2단계 : 50이하의 정수를 입력하세요.");
+            int num2 = Int32.Parse(Console.ReadLine());
+            for (int i = 0; i < num2; i++)
+            {
+                for (int j = num2 - 1; j >= i; j--)
+                    Console.Write("*");
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            Console.Write("3단계 : 50이하의 정수를 입력하세요.");
+            int num3 = Int32.Parse(Console.ReadLine());
+            for (int i = 0; i < num3; i++)
+            {
+                for (int j = 0; j < (num3 - i - 1); j++)
+                {
+                    Console.Write(" ");
+                }
+                for (int k = 0; k <= i; k++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            Console.Write("4단계 : 50이하의 정수를 입력하세요.");
+            int num4 = Int32.Parse(Console.ReadLine());
+            for(int i = 0; i < num4; i++)
+            {
+                for(int j = num4 - i; j < num4; j++)
+                {
+                    Console.Write(" ");
+                }
+                for (int k = num4; k > i; k--)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+
+            Console.Write("5단계 : 50이하의 정수를 입력하세요.");
+            int num5 = Int32.Parse(Console.ReadLine());
+            for (int i = 1; i <= num5; i++)
+            {
+                for (int j = 1; j <= num5 - i; j++)
+                {
+                    Console.Write(" ");
+                }
+                for (int k = 1; k <= i; k++)
+                {
+                    Console.Write("*");
+                }
+                for (int l = 0; l-i+2 <= 0; l++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine("");
+            }
+            for (int a = 1; a <= num5; a++)
+            {
+                for (int b = 1; b <= a; b++)
+                {
+                    Console.Write(" ");
+                }
+                for (int c = num5 - 1; c >= a; c--)
+                {
+                    Console.Write("*");
+                }
+                for(int d = 0; d < num5 - a -1; d++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine("");
+            }
+        }
+    }
+}
