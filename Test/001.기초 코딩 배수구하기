@@ -1,0 +1,40 @@
+/'
+하나의  숫자를 입력합니다.
+그 숫자가 3의 배수이거나 7의 배수이면
+"3 또는 7의 배수입니다." 로 출력하고
+그렇지 않으면 
+"3 또는 7의 배수가 아닙니다." 로 출력해 주세요.
+-----------------------------------------------
+입력 : 21
+3 또는 7의 배수입니다.
+------------------------------------------------
+입력 : 20
+3 또는 7의 배수가 아닙니다.
+-------------------------------------------------
+'/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp006
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("하나의 숫자를 입력합니다.");
+            string num_s = Console.ReadLine();
+            int num = Int32.Parse(num_s);
+            if (num % 3 == 0 || num % 7 == 0)
+            {
+                Console.WriteLine("3 또는 7의 배수입니다.");
+            }
+            else
+            {
+                Console.WriteLine("3 또는 7의 배수가 아닙니다.");
+            }
+        }
+    }
+}
