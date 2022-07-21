@@ -1,0 +1,71 @@
+/'
+프로그램 명: gold_coin
+왕은 그의 충성스러운 기사에게 금화를 주기로 했다.
+첫 째 날 기사는 금화 한 닢을 받았다.
+2,3 일째는 금화 두 닢을 받았다.
+4,5,6 일째는 금화 세 닢을 받았다.
+...
+1 2 2 3 3 3 4 4 4 4 5 5 5 5 5 ...
+날 수가 주어질 때 첫 날부터 받은 총 금화의 수를 구하는 것이 문제이다.
+입력
+주어지는 날 수는 1 .. 10000 까지 주어진다.
+
+출력
+총 날수를 출력 형식에 맞게 출력한다.
+
+입력
+10
+
+출력
+10 30
+
+입력
+100
+
+출력
+100 945
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz25
+{
+    class Gold_coin
+    {
+        public int day_pay(int day)
+        {
+            int[] pay_sum = new int[day];
+            int day_pay = 1;
+            int sum = 0;
+            while(sum < day)
+            {
+                sum = 0;
+                for(int i = 1; i <= day_pay; i++)
+                {
+                    sum = sum + i;
+                }
+                day_pay++;
+            }
+            return day_pay-1;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("날 수를 입력하시오 > ");
+            int day = Int32.Parse(Console.ReadLine());
+            Gold_coin gold = new Gold_coin();
+            int sum = 0;
+            for (int i = 1; i <= day; i++)
+            {
+                sum = sum + gold.day_pay(i)
+            }
+            Console.WriteLine(day + " " + sum);
+        }
+    }
+}
