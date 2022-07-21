@@ -1,0 +1,42 @@
+/'
+1.A ~ Z 까지 출력 하세요
+단, while 문으로 출력해 주세요.
+2. for문을 사용하여 1 ~ 100 : 5050 을 출력해 주세요.
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Foreach
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            /*
+            * 1번
+            * A ~ Z 까지 출력하세요. 단 While문으로.
+            */
+            int j = 65;
+            while (j <= 90)
+            {
+                Console.WriteLine(((char)j).ToString());
+                j++;
+            }
+            /* 
+             * 2번
+             * for문 사용하여 1~100합(5050) 출력
+             * */
+            int sum = 0;
+            for(int i = 1; i <= 100; i++)
+            {
+                sum = sum + i;
+            }
+            Console.WriteLine(sum);
+        }
+    }
+}
