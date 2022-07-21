@@ -1,0 +1,68 @@
+/'
+상위 부모 클래스 도형(Shape)
+
+하위 클래스 
+ - 삼각형(Triangle)
+ - 사각형(Rectangle)
+ - 원 (Circle)
+구현 메소드 void draw()
+각 자식 클래스는 draw 메소드를 오버라이딩 하세요.
+---------------------------------------
+도형을 그리다.
+삼각형을 그리다.
+사각형을 그리다.
+원을 그리다.
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz07
+{
+    class Shape
+    {
+        public virtual void draw()
+        {
+            Console.WriteLine("도형을 그리다");
+        }
+    }
+    class Triangle : Shape
+    {
+        public override void draw()
+        {
+            Console.WriteLine("삼각형을 그리다");
+        }
+    }
+    class Rectangle : Shape
+    {
+        public override void draw()
+        {
+            Console.WriteLine("사각형을 그리다");
+        }
+    }
+    class Circle : Shape
+    {
+        public override void draw()
+        {
+            Console.WriteLine("원을 그리다");
+        }
+    }
+    
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Shape shape = new Shape();
+            shape.draw();
+            Triangle triangle = new Triangle();
+            triangle.draw();
+            Rectangle rectangle = new Rectangle();
+            rectangle.draw();
+            Circle circle = new Circle();
+            circle.draw();
+        }
+    }
+}
