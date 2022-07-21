@@ -1,0 +1,58 @@
+/'
+1) 중복허용이 되지않습니다.
+2) 로또번호를 정렬해서 출력해 주세요
+
+--------------------------------------
+로또번호 : 7 14 22 35 37 45
+보너스번호: 13
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lotto_num
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] ary = new int[7];
+            Random random = new Random();
+            int[] num = new int[6];
+
+            for (int i = 0; i < 7; i++)
+            {
+                int n = random.Next(1, 46);
+                for(int j = 0; j<i; j++)
+                {
+                while (true)
+                {
+                    if (ary[j] == n)
+                    {
+                        n = random.Next(1, 46);
+                    }
+                    else break;
+                }
+                }
+                ary[i] = n;
+            }
+            
+            for(int i = 0; i < 6; i++)
+            {
+                num[i] = ary[i];
+            }
+            Array.Sort(num);
+            Console.Write("당첨 번호 : ");
+            
+            for (int i = 0; i < num.Length; i++)
+            {
+                Console.Write(num[i] + " ");
+            }
+            Console.WriteLine("보너스 번호 : " + ary[6]);
+            
+        }
+    }
+}
