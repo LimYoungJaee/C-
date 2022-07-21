@@ -1,0 +1,63 @@
+double[] result[] = new double[4] 배열을 이용하여
+4칙연산 덧셈(plus), 뺄셈(minus), 곱셈(multiple), 나눗셈(divide)의 결과를 배열 result에 저장하고
+결과를 배열을 이용하여 순서대로 출력해 주세요.
+-------------------------------------------------
+400
+200
+
+600
+200
+80000
+2
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz19
+{
+    class Cal 
+    {
+        double[] result = new double[4];
+        public double plus(int a, int b)
+        {
+            return result[0] = a + b;
+        }
+        public double minus(int a, int b)
+        {
+            return result[1] = a - b
+        }
+        public double multiple(int a,int b)
+        {
+            return  result[2] = a * b ;
+        }
+        public double divide(int a, int b)
+        {
+            return result[3] = a / b;
+        }
+        public void Print()
+        {
+            for(int i = 0; i < result.Length; i++)
+                Console.WriteLine(result[i]);
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Cal cal = new Cal();
+            Console.WriteLine("두 수를 입력하세요.");
+            int a = Int32.Parse(Console.ReadLine());
+            int b = Int32.Parse(Console.ReadLine());
+            cal.plus(a, b);
+            cal.minus(a, b);
+            cal.multiple(a, b);
+            cal.divide(a, b);
+            cal.Print();
+        }
+    }
+}
