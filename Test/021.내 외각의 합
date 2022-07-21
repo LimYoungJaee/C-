@@ -1,0 +1,45 @@
+/'
+프로그램 명: angle(open)
+n 각형의 내각의 합과 외각의 합을 구하는 문제이다.
+
+입력
+n 은 3 이상 20 이하의 정수이다.
+
+출력
+내각의 합, 외각의 합을 출력한다.
+
+입력
+3
+
+출력
+180 360
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz20
+{
+    class Angle
+    {
+        public int in_sum(int n)
+        {
+            return (n - 2) * 180;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int out_sum = 360;
+            Console.Write("n을 입력하세요 > ");
+            int num = Int32.Parse(Console.ReadLine());
+            Angle angle = new Angle();
+            Console.WriteLine($"내각의 합 : {angle.in_sum(num)}");
+            Console.WriteLine($"외각의 합 : {out_sum}");
+        }
+    }
+}
