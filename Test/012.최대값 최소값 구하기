@@ -1,0 +1,101 @@
+/'
+프로그램 명: max
+7 개의 수를 입력으로 받아 입력 받은 수 중 최대값을 출력하는 프로그램을 작성하시오.
+
+입출력 예
+
+입력
+6 2 9 8 3 4 7
+출력
+9
+'/
+
+// sort 함수사용
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz10
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] nums = new int[7];
+            Console.WriteLine("7개의 숫자를 입력하세요.");
+            string num_str = Console.ReadLine();
+            string[] num_str_arr = num_str.Split(' ');
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                nums[i] = Int32.Parse(num_str_arr[i]);
+            }
+            Array.Sort(nums);
+            Console.WriteLine("최소값 : " + nums[0]);
+            Console.WriteLine("최대값 : " + nums[6]);
+        }
+    }
+}
+
+// sort 사용X
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz10
+{
+   
+    internal class Program
+    {
+        static public void swap(int[] nums)
+        {
+            int temp;
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                for (int j = i + 1; j < nums.Length; j++)
+                {
+                    if (nums[i] > nums[j])
+                    {
+                        temp = nums[i];
+                        nums[i] = nums[j];
+                        nums[j] = temp;
+                    }
+                }
+            }
+        }
+        static public void min(int[] nums)
+        {
+            swap(nums);
+            Console.WriteLine(nums[0]);
+        }
+        static public void max(int[] nums)
+        {
+            swap(nums);
+            Console.WriteLine(nums[6]);
+        }
+        static void Main(string[] args)
+        {
+            int[] nums = new int[7];
+            Console.WriteLine("7개의 숫자를 입력하세요.");
+            string num_str = Console.ReadLine();
+            string[] num_str_arr = num_str.Split(' ');
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                nums[i] = Int32.Parse(num_str_arr[i]);
+            }
+            Console.Write("최소값 : ");
+            min(nums);
+            Console.Write("최대값 : ");
+            max(nums);
+        }
+    }
+}
