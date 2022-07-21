@@ -1,0 +1,43 @@
+/'
+완전수란 자신을 제외한 약수의 합이 자신이 되는 수를 완전수라고 합니다. 6은 완전수입니다. 
+6의 약수는 1 2 3 6 이 중 자신을 제외한 약수의 합 1 + 2 + 3 = 6 즉, 6은 완전수입니다.
+1000 이하의 완전수를 입력 받아 yes, no로 표현해 주세요.
+---------------------------------------------------------------------------
+6
+yes
+8
+no
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz05
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("숫자를 입력하세요. > ");
+            int num = Int32.Parse(Console.ReadLine());
+            for (int i = 1; i <= num; i++)
+            {
+                int cnt = 0;
+                for (int j = 1; j < i-1; j++)
+                {
+                    if (i % j == 0)
+                    {
+                        cnt = cnt + j;
+                    }
+                }
+                if (cnt == num)
+                {
+                    Console.WriteLine(num + "는 완전수입니다.");
+                }
+            }
+        }
+    }
+ }
