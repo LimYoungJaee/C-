@@ -1,0 +1,50 @@
+/'
+입력 받은 두 수를 메소드를 만들어 연산하세요.
+plus(int a, int b), minus(), multiple(), divide()
+계산기 프로그램을 static 함수로 만들어 주세요.
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Method02
+{
+    internal class Program
+    {
+        static int plus(int a, int b)
+        {
+            return a + b;
+        }
+        static int minus(int a, int b)
+        {
+            return a - b;
+        }
+        static int mul(int a, int b)
+        {
+            return a * b;
+        }
+        static double div(int a, int b)
+        {
+            return a / 1.0 / b;
+        }
+        static void Main(string[] args)
+        {
+            Console.Write("첫번쨰 숫자를 입력하세요 >");
+            string num1_s = Console.ReadLine();
+            int num1 = Int32.Parse(num1_s);
+
+            Console.Write("두번쨰 숫자를 입력하세요 >");
+            string num2_s = Console.ReadLine();
+            int num2 = Int32.Parse(num2_s);
+
+            Console.WriteLine(num1 + " + " + num2  + " = " + plus(num1, num2));
+            Console.WriteLine(num1 + " - " + num2  + " = " + minus(num1, num2));
+            Console.WriteLine(num1 + " * " + num2  + " = " + mul(num1, num2));
+            Console.WriteLine(num1 + " / " + num2  + " = " + div(num1, num2));
+
+        }
+    }
+}
