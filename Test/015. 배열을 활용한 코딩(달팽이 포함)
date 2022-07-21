@@ -1,0 +1,216 @@
+/'
+[0.5 단계]
+ 1.
+ 10  9   8  7  6  5  4  3  2  1
+
+ 2. 
+ int num = new int[5] 즉, 5개 크기의 배열을 만들고 1 ~ 10 가지 중 홀수만 배열에 담으시오.
+ 9  7  5  3  1
+
+ 3. int[10] 크기의 배열에 1부터 순차적으로 입력하고 콘솔 화면에 짝수 값만 출력하세요. 
+ 1 2 3 5 6 7 8 9 10
+ 2 4 6 8 10
+--------------------------------------------------
+[1단계]
+N : 5﻿
+
+1   6  11  16  21 
+2   7  12  17  22
+3   8  13  18  23
+4   9  14  19  24
+5  10  15  20  25
+-----------------------------------------------------------
+[2단계]
+
+N : 5﻿
+
+25  24  23  22  21 
+20  19  18  17  16
+15  14  13  12  11
+10   9   8    7   6
+5     4   3   2   1 
+-----------------------------------------------------------
+[4단계] 달팽이 배열
+100이하의 정수만 입력됩니다.
+
+N? 5
+
+1   2   3   4  5
+16 17  18  19  6
+15 24  25  20  7
+14 23  22  21  8
+13 12  11  10  9
+
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz15
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            /* 0.5단계 - 1
+             int[] num_arr = new int[10];
+            for(int i = 0; i < 10; i++)
+            {
+                num_arr[i] = 10-i;
+                Console.Write(num_arr[i] + " ");
+            }
+             */
+
+            /* 0.5단계 - 2
+            int[] num_arr = new int[5];
+            for(int i = 0; i < 5; i++)
+            {
+                num_arr[i] = 9-(2*i);
+                Console.Write(num_arr[i] + " ");
+            } 
+            */
+
+            /* 0.5단계 - 3
+            int[] num_arr = new int[10];
+            for(int i = 0; i < 10; i++)
+            {
+                num_arr[i] = i+1;
+                if(i % 2 == 1)
+                    Console.Write(num_arr[i] + " ");
+            }
+             */
+             
+            /*  1단계
+            Console.WriteLine("숫자를 입력하세요");
+            int num = Int32.Parse(Console.ReadLine());
+
+            for(int i = 1; i <= num; i++)
+            {
+                for(int j = 1; j <= num; j++)
+                {
+                    Console.Write(i + (j * 5) - 5 + "\t");
+                }
+                Console.WriteLine();
+            }
+            */
+
+            /* 2단계
+            Console.WriteLine("숫자를 입력하세요");
+            int num = Int32.Parse(Console.ReadLine());
+            int[,] num_arr = new int[num, num];
+            int cnt = 1;
+            for (int i = 0; i < num; i++)
+            {
+                for (int j = 0; j < num; j++)
+                {
+                    num_arr[i, j] = cnt;
+                    cnt++;
+                }
+            }
+            for (int i = num-1; i >= 0 ; i--)
+            {
+                for (int j = num-1; j >= 0 ; j--)
+                {
+                    Console.Write(num_arr[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+             */
+
+            /* 4단계
+             Console.WriteLine("숫자를 입력하세요");
+            int num = Int32.Parse(Console.ReadLine());
+            int[] num_arr1 = new int[num * num];
+            int[,] num_arr2 = new int[num, num];
+            int cnt = 1;
+            for (int i = 0; i < num; i++)
+            {
+                num_arr1[i] = cnt;
+                cnt++;
+            }
+
+
+            int a = 1;
+            int cntnum = num - 1;
+            int hang = 0;
+            int yeol = 0;
+            int sc = 0;
+
+            if (num % 2 == 1)
+            {
+                while (sc < num/2)
+                {
+                    for (int i = hang; i <= cntnum; i++)
+                    {
+                        num_arr2[hang, i] = a;
+                        a++;
+                    }
+                    hang++;
+                    for (int i = hang; i <= cntnum; i++)
+                    {
+                        num_arr2[i, cntnum] = a;
+                        a++;
+                    }
+                    for (int i = cntnum - 1; i >= yeol; i--)
+                    {
+                        num_arr2[cntnum, i] = a;
+                        a++;
+                    }
+                    cntnum--;
+                    for (int i = cntnum; i >= hang; i--)
+                    {
+                        num_arr2[i, yeol] = a;
+                        a++;
+                    }
+                    yeol++;
+                    sc++;
+                    num_arr2[(num/2), (num / 2)] = num * num;
+                }
+            }
+            else
+            {
+                while (sc < num/2)
+                {
+                    for (int i = hang; i <= cntnum; i++)
+                    {
+                        num_arr2[hang, i] = a;
+                        a++;
+                    }
+                    hang++;
+                    for (int i = hang; i <= cntnum; i++)
+                    {
+                        num_arr2[i, cntnum] = a;
+                        a++;
+                    }
+                    for (int i = cntnum - 1; i >= yeol; i--)
+                    {
+                        num_arr2[cntnum, i] = a;
+                        a++;
+                    }
+                    cntnum--;
+                    for (int i = cntnum; i >= hang; i--)
+                    {
+                        num_arr2[i, yeol] = a;
+                        a++;
+                    }
+                    yeol++;
+                    sc++;
+                    num_arr2[(num / 2), (num / 2)] = (num * num)-1;
+                }
+            }
+
+            for (int i = 0; i < num; i++)
+            {
+                for (int j = 0; j < num; j++)
+                {
+                    Console.Write(num_arr2[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+             */
+        }
+    }
+}
