@@ -1,0 +1,36 @@
+/'
+Q) 구구단의 결과를 배열에 저장한 후
+모두 출력하여라
+int[] result_gugudan = new int [72];
+-----------------------------------
+2 4 6 ... 81
+!!! 카운트 변수 cnt !!!!
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+ 
+namespace MyApp_Array03
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] result_gugudan = new int[72];
+            int count = 0;
+            for(int i = 2; i < 10; i++)
+            {
+                for(int j = 0; j < 9; j++)
+                {
+                    result_gugudan[count] = i * (j+1);
+                    Console.Write(result_gugudan[count] + "\t");
+                    count += 1;
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
