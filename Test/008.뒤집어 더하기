@@ -1,0 +1,60 @@
+/'
+프로그램 명: radd
+제한시간: 1 초 
+두 수를 입력으로 받아 두수를 뒤집어서 더한 후 더한 결과를 뒤집어서 출력 입력으로 12 와 345 가 입력된다면
+21 + 543 = 564
+이를 역으로 출력하면 465 이다.
+
+입출력 예
+
+입력
+12 345
+
+출력
+465
+
+요구 사항
+함수 사용
+'/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz06
+{
+    class Change
+    {
+        public int change(int a)
+        {
+            string a_str = a.ToString();
+            string a_str_change = "";
+            for (int i = 0; i < a_str.Length; i++)
+            {
+                a_str_change = a_str_change + a_str[a_str.Length - i - 1];
+            }
+            int change_a = Int32.Parse(a_str_change);
+            return change_a;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("첫번째 숫자를 입력하세요 >");
+            int num1 = Int32.Parse(Console.ReadLine());
+            Console.Write("두번째 숫자를 입력하세요 >");
+            int num2 = Int32.Parse(Console.ReadLine());
+
+            Change ch = new Change();
+            int num_change1 = ch.change(num1);
+            int num_change2 = ch.change(num2);
+            Console.WriteLine(num_change1 + " + " + num_change2 + " = " + (num_change1 + num_change2));
+            Console.WriteLine("바뀐 수 = " + ch.change(num_change1 + num_change2));
+
+        }
+    }
+}
+
