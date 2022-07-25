@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DotNet_Core_LINQ_01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            /*  확장메서드
+             *  Sum() : 합
+             *  Count() : 컬렉션 요소의 개수
+             *  Average() : 평균
+             *  Max() : 최대값
+             *  Min() : 최소값
+             */
+
+            int[] numbers = { 1, 2, 3 };
+            int sum = numbers.Sum();
+            int count = numbers.Count();
+            double avg = numbers.Average();
+
+            Console.WriteLine("Sum() : " + sum);
+            Console.WriteLine("Count() : " + count);
+            Console.WriteLine("Average() : " + avg);
+            Console.WriteLine("Max() : " + numbers.Max());
+            Console.WriteLine("Min() : " + numbers.Min());
+
+        }
+    }
+}
