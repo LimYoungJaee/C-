@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GetFileNameDemo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string dir = "C\\Windows\\System32\\X_80.png";
+            string fullName = String.Empty;
+            string name = "";
+            string ext = name;
+
+            // 파일이름
+            fullName = dir.Substring(dir.LastIndexOf('\\') + 1);
+            Console.WriteLine(fullName);
+            // 파일명
+            name = fullName.Substring(0, fullName.LastIndexOf('.'));
+            Console.WriteLine(name);
+            // 확장명
+            ext = fullName.Substring(fullName.LastIndexOf('.'));
+            Console.WriteLine(ext);
+
+            // Path.GetFileName을 통해 위치를 제외한 파일만 추출
+            Console.WriteLine(Path.GetFileName(dir));
+            // Path.GetFileNameWithoutExtension 통해 파일명만 추출
+            Console.WriteLine(Path.GetFileNameWithoutExtension(dir));
+            // Path.GetExtension을 통해 확장자 추출
+            Console.WriteLine(Path.GetExtension(dir));
+            // Path.GetDirectoryName을 통해 디렉토리 추출
+            Console.WriteLine(Path.GetDirectoryName(dir));
+            //Path.GetFullPath을 통해 Path 전체 추출
+            Console.WriteLine(Path.GetFullPath(dir));
+        }
+    }
+}
