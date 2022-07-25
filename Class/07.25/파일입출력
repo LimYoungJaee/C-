@@ -1,0 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz_28
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // A파일 읽어오기
+            StreamReader sr = new StreamReader(@"C:\Temp\A.txt");
+            string str = sr.ReadToEnd();
+            sr.Close();
+            sr.Dispose();
+            string date = "안녕하세요. \r\n반갑습니다." + Environment.NewLine + "또 만나요.";
+
+            // B파일에 쓰기
+            // StreamWriter 클래스를 사용하여 파일 생성
+            StreamWriter sw = new StreamWriter("C:\\Temp\\B.txt");
+            sw.WriteLine(str);
+            sw.Close();
+        }
+    }
+}
