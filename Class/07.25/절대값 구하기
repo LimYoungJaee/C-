@@ -1,0 +1,27 @@
+            // 절대값 구하기 함수
+            int Abs(int number) => (number < 0) ?  -number : number;
+
+            // 초기화
+            int min = int.MaxValue; // 차이값의 절대값 중 최솟값이 담길 변수
+
+            // 입력
+            int[] numbers = { 10, 20, 30, 27, 17 };
+            int target = 25;
+            int near = 0;
+
+            // 처리
+            for(int i = 0; i < numbers.Length; i++)
+            {
+                int abs = Abs(numbers[i] - target);
+                if(abs < min)
+                {
+                    min = abs;
+                    near = numbers[i];
+                }
+            }
+
+            // 출력
+            var minimum = numbers.Min(m => Math.Abs(m - target));
+            var closest = numbers.First(c => Math.Abs(target - c) == minimum);
+            Console.WriteLine($"{target}과 가장 가까운 값(식) : {closest}(차이 : {minimum})");
+            Console.WriteLine($"{target}과 가장 가까운 값(문) : {near}(차이 : {min})");
