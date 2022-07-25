@@ -1,0 +1,60 @@
+/*
+프로그램 명: rank1
+요즘은 공정성과 정확성을 위해 대부분 컴퓨터를 이용해 채점을 한다. 각 개인별로 채점이 끝나고, 마지막 작업으로 점수가 높은 사람별로 순위를 정한후 출력하고자 한다.
+예를들어 85점, 105점, 92점을 받았다면, 각각 3등, 1등, 2등이다. 드물게 동점자가 나오는 경우도 있다. 예로 90, 100, 90, 80 점을 맞은 경우에는, 2등, 1등, 2등, 4등으로 처리하도록 한다.
+
+입력
+첫째 줄에는 사람의 수 N(1000 이하 정수)이 주어진다. 다음줄부터는 각 사람의 점수가 주어진다.
+
+출력
+점수가 높은 사람이 먼저 출력되고 각 줄에는 점수와 등수가 출력되도록 한다.
+
+입력
+5
+97
+65
+84
+84
+91
+
+출력 
+97 1
+91 2
+84 3
+84 3
+65 5
+*/
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz28
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int num = Int32.Parse(Console.ReadLine());
+            int[] numbers = new int[num];
+            int cnt = 1;
+            for(int i = 0; i < num; i++)
+            {
+               numbers[i] = Int32.Parse(Console.ReadLine());
+            }
+
+            var linqNumbers = from i in numbers
+                              orderby i descending
+                              select i;
+
+            foreach(int var in linqNumbers)
+            {
+                Console.WriteLine(var + " " + cnt);
+                cnt++;
+            }
+        }
+    }
+}
