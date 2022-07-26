@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EventTest
+{
+    // 1. Event : 클릭 또는 마우스 오버 등등과 같은 동장(트리거)
+    // 2. Event 처리기 : 특정 이벤트를 담당하려고 만든 메서드
+    public class ButtonClass
+    {
+        // 1. 이벤트 생성을 위해 대리자 하나 생성하기
+        public delegate void EventHandler(); // 메서드를 여러 개 등록 후 호출 가능
+        // 2. 이벤트 선언 -> Click 이벤트
+        public event EventHandler Click;
+
+        // 멤버 메소드
+        public void OnClick()
+        {
+            if(Click != null) // 이베트에 등록된 값이 있는지 확인
+            {
+                Click();  // 대리자 형식의 이벤트 수행
+            }
+        }
+    }
+    internal class EventDemo
+    {
+        static void Hi1() => Console.WriteLine("C#");
+        static void Hi2() => Console.WriteLine(".Net");
+        static void Main()
+        {
+            ButtonClass btn = new ButtonClass();
+            btn.Click += Hi1;
+            btn.Click += new ButtonClass.EventHandler(Hi2);
+
+            btn.OnClick();
+        }
+    }
+}
