@@ -1,0 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AnonymousTypeTest
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // 익명 형식 (var를 쓰는이유 = 타입을 몰라서)
+            var date = new { id = 1, Name = "익명형식" };
+            Console.WriteLine($"{date.id} - {date.Name}");
+
+            var presenter = new { Name = "홍길동", Age = 20, Topic = "C#" };
+            Console.WriteLine($"{presenter.Name}, {presenter.Age}, {presenter.Topic}");
+        }
+    }
+}
