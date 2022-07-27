@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StreamTest
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            StreamReader sr = new StreamReader(@"C:\Temp\abc.txt");
+            string str = sr.ReadToEnd();
+            sr.Close();
+            sr.Dispose();
+
+            MemoryStream ms = new MemoryStream();
+            ms.Capacity = str.Length;
+            ms.Position = 0;
+            byte[] data = Encoding.UTF8.GetBytes(str);
+            ms.Write(data, 0, data.Length);
+            byte[] data2 = ms.GetBuffer();
+            string buf2 = Encoding.UTF8.GetString(data2);
+
+            Console.WriteLine(buf2);
+        }
+    }
+}
