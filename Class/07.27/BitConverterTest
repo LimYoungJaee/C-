@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BitConverterTest2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            byte[] boolBytes_true = BitConverter.GetBytes(true);
+            byte[] boolBytes_false = BitConverter.GetBytes(false);
+            Console.WriteLine(BitConverter.ToBoolean(boolBytes_true, 0));
+            Console.WriteLine(BitConverter.ToBoolean(boolBytes_false, 0));
+            Console.WriteLine(BitConverter.ToString(boolBytes_true, 0));
+            Console.WriteLine(BitConverter.ToString(boolBytes_false, 0));
+
+            byte[] shortByte = BitConverter.GetBytes((short)32000);
+            Console.WriteLine(BitConverter.ToString(shortByte, 0));
+
+            byte[] intByte = BitConverter.GetBytes(1652300);
+            Console.WriteLine(BitConverter.ToString(intByte, 0));
+
+            // 역직렬화
+            Console.WriteLine(BitConverter.ToBoolean(boolBytes_true, 0));
+            Console.WriteLine(BitConverter.ToInt16(shortByte, 0));
+            Console.WriteLine(BitConverter.ToInt32(intByte, 0));
+
+            MemoryStream ms = new MemoryStream();
+            ms.Write(shortByte, 0, shortByte.Length);
+            ms.Write(intByte, 0, intByte.Length);
+
+            ms.Position = 0;
+
+            // MemoryStream으로부터 short를 역직렬화
+            byte[] outBytes = new byte[2];
+            ms.Read(outBytes, 0, 2);
+            int shortResult = BitConverter.ToInt16(outBytes, 0);
+            Console.WriteLine(shortResult);
+
+            // Int 역직렬화
+            outBytes = new byte[4];
+            ms.Read(outBytes, 0, 4);
+            int intResult = BitConverter.ToInt32(outBytes, 0);
+            Console.WriteLine(intResult);
+        }
+    }
+}
