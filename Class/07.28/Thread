@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ThreadTest001
+{
+    internal class Program
+    {
+        static void threadFunc1()
+        {
+            for(int i = 65; i < 91; i++)
+            {
+                Console.Write((char)i + " ");
+            }
+            Console.WriteLine();
+            for(int i = 97; i < 123; i++)
+            {
+                Console.Write((char)i + " ");
+            }
+            Console.WriteLine($"Thread : {Thread.CurrentThread.ManagedThreadId}종료");
+        }
+        static void threadFunc2()
+        {
+            for(int i = 1; i <= 100; i++)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine($"Thread : {Thread.CurrentThread.ManagedThreadId}종료");
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine($"Thread : {Thread.CurrentThread.ManagedThreadId}");
+            Thread t1 = new Thread(threadFunc1);
+            Console.WriteLine($"Thread : {t1.ManagedThreadId}");
+            Thread t2 = new Thread(threadFunc2);
+            Console.WriteLine($"Thread : {t2.ManagedThreadId}");
+            t1.Start();
+            t2.Start();
+            t1.Join();  // 쓰레드가 종료되고 나서 메인프로그램을 종료
+            t2.Join();
+            Console.WriteLine("메인 프로그램 종료");
+        }
+    }
+}
