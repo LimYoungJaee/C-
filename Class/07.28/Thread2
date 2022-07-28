@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ThreadTest01
+{
+    internal class Program
+    {
+        static void threadFunc()
+        {
+            Console.WriteLine("5초 후에 프로그램 종료");
+            Thread.Sleep(5000);
+            Console.WriteLine("쓰레드 종료");
+        }
+        static void Main(string[] args)
+        {
+            Thread t = new Thread(new ThreadStart(threadFunc));
+            t.IsBackground = true;  // 메인쓰레드가 죽으면 모두 죽는다.
+            t.Start();
+            //t.Join(); // 쓰레드가 모두 종료 후 메인쓰레드 종료
+            Console.WriteLine("메인 스레드 종료");
+        }
+    }
+}
