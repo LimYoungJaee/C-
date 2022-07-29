@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SFQuiz10
+{
+    internal class Quiz10
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("N ?");
+            int num = Int32.Parse(Console.ReadLine());
+            int[,] numbers = new int[num, num];
+            for (int i = 0; i < num; i++)
+            {
+                for (int j = 0; j < num; j++)
+                {
+                    numbers[i, j] = 0;
+                }
+            }
+            int cnt = 1;
+            int hang = 0; int yeol = num / 2;
+            int while_cnt = 1;
+
+            while (while_cnt <= num * num)
+            {
+                numbers[hang--, yeol++] = cnt++;
+                if (hang == -1)
+                    hang = num - 1;
+                if (yeol == num)
+                    yeol = 0;
+                while_cnt++;
+
+                if (numbers[hang,yeol] != 0)
+                {
+                    hang = hang + 2;
+                    yeol--;
+                    if (yeol == -1)
+                        yeol = num - 1;
+                    if (hang >= num)
+                        hang = hang - num;
+                }
+
+
+            }
+
+            for(int i =0; i<num; i++)
+            {
+                for(int j = 0; j <num; j++)
+                {
+                    Console.Write(numbers[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+
+        }
+    }
+}
