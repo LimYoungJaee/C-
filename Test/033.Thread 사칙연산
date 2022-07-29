@@ -1,0 +1,117 @@
+[1단계]
+계산기 클래스 Calculator를 만드세요.
+Thread를 이용해서
+4칙연산을 하는 프로그램을 만들어 주세요.
+int a = 500 , b = 200
+Plus()
+{ 
+   Console.WriteLine(a + b);
+}
+Minus
+Multiple
+Divide
+[2단계]
+스레드 함수로  파라미터로 전달하세요.
+
+
+1단계
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz33
+{
+    class Calculator
+    {
+        int a = 500, b = 200;
+
+        public void Plus()
+        {
+            Console.WriteLine($"{a} + {b} = {a + b}");
+        }
+        public void Minus()
+        {
+            Console.WriteLine($"{a} - {b} = {a - b}");
+        }
+        public void Mul()
+        {
+            Console.WriteLine($"{a} * {b} = {a * b}");
+        }
+        public void Div()
+        {
+            Console.WriteLine($"{a} / {b} = {(double)a / 2.0 / b}");
+        }
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int a = 20, b = 10;
+            Calculator calculator = new Calculator();
+            Thread t_plus = new Thread(new ThreadStart(calculator.Plus));
+            Thread t_minus = new Thread(calculator.Minus);
+            Thread t_mul = new Thread(calculator.Mul);
+            Thread t_div = new Thread(calculator.Div);
+            t_plus.Start();
+            t_minus.Start();
+            t_mul.Start();
+            t_div.Start();
+        }
+    }
+}
+
+2단계
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz33
+{
+    class Calculator
+    { 
+        public void Plus(int a, int b)
+        {
+            Console.WriteLine($"{a} + {b} = {a + b}");
+        }
+        public void Minus(int a, int b)
+        {
+            Console.WriteLine($"{a} - {b} = {a - b}");
+        }
+        public void Mul(int a, int b)
+        {
+            Console.WriteLine($"{a} * {b} = {a * b}");
+        }
+        public void Div(int a, int b)
+        {
+            Console.WriteLine($"{a} / {b} = {(double)a / 2.0 / b}");
+        }
+
+
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int a = 20, b = 10;
+            Calculator calculator = new Calculator();
+            Thread t_plus = new Thread(() => calculator.Plus(500, 200));
+            Thread t_minus = new Thread(() => calculator.Minus(500, 200));
+            Thread t_mul = new Thread(() => calculator.Mul(500, 200));
+            Thread t_div = new Thread(() => calculator.Div(500, 200));
+            t_plus.Start();
+            t_minus.Start();
+            t_mul.Start();
+            t_div.Start();
+        }
+    }
+}
