@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace MyApp_Quiz33
+{
+    class Calculator
+    {
+        int a1 = 500, a2 = 200;
+        public void Plus()
+        {
+            Console.WriteLine($"{a1} + {a2} = {a1 + a2}");
+        }
+        public void Plus(int a, int b)
+        {
+            Console.WriteLine($"{a} + {b} = {a + b}");
+        }
+        public void Plus1(object obj)
+        {
+            Value z = (Value)obj;
+            Console.WriteLine(z.A + z.B);
+        }
+    }
+    class Value
+    {
+        public int A
+        {
+            get;
+            set;
+        }
+        public int B
+        {
+            get;
+            set;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Calculator calculator = new Calculator();
+            Thread t1 = new Thread(new ThreadStart(calculator.Plus));
+            t1.Start();
+
+            Thread t2 = new Thread(delegate ()
+            {
+                calculator.Plus(500, 200);
+            });
+            t2.Start();
+
+            Thread t3 = new Thread(() => calculator.Plus(500, 200));
+            t3.Start();
+
+            Thread t4 = new Thread(new ParameterizedThreadStart(calculator.Plus1));
+            Value v = new Value();
+            v.A = 500;
+            v.B = 200;
+            t4.Start();
+        }
+    }
+}
