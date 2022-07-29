@@ -58,7 +58,7 @@ namespace MyApp_Quiz33
             Value v = new Value();
             v.A = 500;
             v.B = 200;
-            t4.Start();
+            t4.Start(v);
         }
     }
 }
