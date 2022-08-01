@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FileReaderTest
+{
+    internal class Program
+    {
+        static int b = 0;
+        static int c = 0;
+        static int Function()
+        {
+            int a = 200;
+            return a;
+        }
+        static int Function(int a)
+        {
+            a = 200;
+            return a;
+        }
+        static int Fucntion_2(int num)
+        {
+            c = num + 100; // 전역변수
+            return c;
+        }
+        static void Main(string[] args)
+        {
+            int a = 100;
+            Function();
+            Console.WriteLine(a); // 100 => Main과 Function 함수 스텍이 다르다. 200출력하려면
+                                  // Function()을 출력
+            Function(a);
+            Console.WriteLine(a); // 마찬가지로 함수에서 return 200을 하지만, 적용을 안함.
+
+            a = Function(a);
+            Console.WriteLine(a); // 200 => a에 Function(a)의 리턴값을 적용했음.
+
+            b = 100;
+            Function(b);
+            Console.WriteLine(b); // 마찬가지로 return에서 200을하지만, 적용을 안함.
+
+            c = 100; // 전역변수
+            Fucntion_2(c);
+            Console.WriteLine(c);  // 전역변수 c를 선언했고, 함수에서 전역변수에 저장했으므로
+                                    // c의 값이 전역변수의 값인 200이 출력
+
+
+        }
+    }
+}
