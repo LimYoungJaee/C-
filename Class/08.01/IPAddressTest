@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IPAddressTest
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // TCP/IP 통신을 위해서는 IP주소가 필요
+            // C#은 객체지향 프로그래밍
+            // IP객체
+
+            IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
+            Console.WriteLine(ipAddr);
+
+            IPAddress ipAddr2 = new IPAddress(new byte[] { 127, 0, 0, 1 });
+            Console.WriteLine(ipAddr2);
+
+            // Port 번호 정수값으로 입력
+
+            // 종단점 --> 내 호스트에서 접근할 컴퓨터 객체를 만들어 봅시다.
+            // System.Net.IpEndPoint
+            IPAddress ipAddr3 = IPAddress.Parse("192.168.0.32");
+            IPEndPoint endpoint = new IPEndPoint(ipAddr3, 9000);
+
+            // System.Net.Dns
+            // $> nsloopup www.naver.com
+            IPHostEntry entry = Dns.GetHostEntry("www.naver.com");
+            foreach (IPAddress ipAddress in entry.AddressList)
+            {
+                Console.WriteLine(ipAddress);
+            }
+        }
+    }
+}
