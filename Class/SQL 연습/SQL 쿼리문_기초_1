@@ -1,0 +1,98 @@
+#90page 문제풀이
+#사원 번호를 기준으로 내림차순 정렬 되도록 코드를 채워 보세요
+SELECT * FROM EMP Order by EMPNO desc;
+
+#월급을 $950 받는 직원의 이름은 어떻게 됩니까?
+SELECT ENAME FROM emp WHERE sal = 950;
+
+#업무는 "SALESMAN" 부서번호는 30번인 직원의 레코드
+SELECT * FROM EMP WHERE JOB = 'SALESMAN' AND DEPTNO = 30; 
+
+#사원번호(EMPNO)가 7499이고 부서번호(DEPTNO)가 30인 사원정보
+SELECT * FROM EMP WHERE EMPNO = 7499 and DEPTNO = 30;
+
+#부서번호가 20번이거나 직업이 'SALESMAN'인 사원의 정보만 나오도록 코드를 채워보세요
+SELECT * FROM EMP WHERE (DEPTNO = 20 or JOB = 'SALESMAN');
+
+# sal이 2000~3000인 사원의 정보 출력
+select * from emp
+where sal between 2000 and 3000;
+
+#LIKE 연산자 문자열 검색
+select * from emp
+where ename LIKE 'S%';
+
+#두번쨰 이름이 L로 시작
+select * from emp
+where ename LIKE '_L%';
+
+#글자에서 "AM"이 포함된 이름
+select * from emp
+where ename LIKE '%AM%';
+
+#글자에서 "AM"이 포함되지 않은 이름
+select * from emp
+where ename NOT LIKE '%AM%';
+
+select ename, sal, comm from emp;
+
+# 사용하지 않는 방식
+select ename, sal, comm from emp where comm = NULL;
+# 사용하는 방식
+select ename, sal, comm from emp where comm Is NULL;
+
+#AND 연산자와 IS NULL 연산자 사용하기
+select * from emp
+where sal > NULL
+or comm IS NULL;
+
+#UNION
+#1
+select empno, ename, sal, deptno from emp
+where deptno = 10;
+#2
+select empno, ename, sal, deptno from emp
+where deptno = 20;
+#3
+select empno, ename, sal, deptno from emp
+where deptno = 10
+UNION
+select empno, ename, sal, deptno from emp
+where deptno = 20;
+
+#5-36 예제 Minus
+select empno, ename, sal, deptno from emp
+Minus
+select empno, ename, sal, deptno from emp
+where deptno = 10;
+
+# 5-37 예제 INTERSECT
+select empno, ename, sal, deptno from emp
+INTERSECT
+select empno, ename, sal, deptno from emp where deptno = 10;
+
+# 연습문제 1
+select * from emp where ename LIKE '%S';
+# 연습문제 2
+select empno, ename, job, sal, deptno from emp 
+where deptno = 30 and job = 'SALESMAN';
+# 연습문제 3
+# 집합 연산자를 사용하지 않은 방식
+select empno, ename, job, sal, deptno from emp 
+where (deptno = 20 or deptno = 30) and sal > 2000;
+# 집합 연산자를 사용하는 방식
+select empno, ename, job, sal, deptno from emp 
+where deptno = 20 or deptno = 30 
+INTERSECT
+select empno, ename, job, sal, deptno from emp 
+where sal > 2000;
+# 연습문제 4
+select * from emp where sal <= 2000
+UNION
+select * from emp where sal >= 3000;
+# 연습문제 5
+select ename, empno, sal, deptno from emp
+where (ename LIKE '%E%') AND deptno = 30 AND sal NOT BETWEEN 1000 AND 2000;
+# 연습문제 6
+select * from emp
+where ename NOT LIKE '_L%' AND COMM IS NULL AND (job = 'CLERK' OR job = 'MANAGER');
