@@ -1,0 +1,5 @@
+hr 계정을 오픈하는 방법
+alter user hr identified by hr account unlock;
+
+hr 계정에 접속하는 방법
+conn hr/hr;
