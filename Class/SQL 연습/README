@@ -1,5 +1,10 @@
 hr 계정을 오픈하는 방법
-alter user hr identified by hr account unlock;
+1. sqlplus 열기 -> 접속??
+  sqlplus system/[설치시 넣은 패스워드]
+2. 계정 오픈
+  alter user hr identified by hr account unlock;
+3. 계정 접속
+  conn hr/hr;
 
-hr 계정에 접속하는 방법
-conn hr/hr;
+오라클 시작시 테이블 구성을 모를 때 전체 테이블을 조회하는 명령어
+SELECT * FROM tab;
