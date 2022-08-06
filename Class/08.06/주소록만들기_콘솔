@@ -1,0 +1,281 @@
+using System;
+
+using System.Collections.Generic;
+
+using System.Linq;
+
+using System.Text;
+
+using System.Threading.Tasks;
+
+
+
+namespace MyAdress_test
+
+{
+
+    class Student
+
+    {
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string PhoneNum { get; set; }
+
+
+
+        public Student(int id, string name, string phoneNum)
+
+        {
+
+            Id = id;
+
+            Name = name;
+
+            PhoneNum = phoneNum;
+
+        }
+
+
+
+    }
+
+    internal class Program
+
+    {
+
+        static public void start()
+
+        {
+
+            List<Student> students = new List<Student>();
+
+            string addr_name;
+
+            string addr_phone;
+
+            string addr_chag_name;
+
+            string addr_chag_phone;
+
+            int cnt = 1;
+
+            while (true)
+
+            {
+
+                Console.WriteLine("1. 주소록 추가 , 2. 주소록 삭제, 3. 주소록 수정, 4. 주소록 가져오기, 5.종료");
+
+                int num = Int32.Parse(Console.ReadLine());
+
+                if (num == 1)
+
+                {
+
+                    Console.WriteLine("추가할 이름을 써주세요.");
+
+                    addr_name = Console.ReadLine();
+
+                    Console.WriteLine("번호를 써주세요.");
+
+                    addr_phone = Console.ReadLine();
+
+                    Student st = new Student(cnt, addr_name, addr_phone);
+
+                    students.Add(st);
+
+                    cnt++;
+
+                }
+
+                else if (num == 2)
+
+                {
+
+                    Console.WriteLine("삭제할 이름을 써주세요.");
+
+                    addr_name = Console.ReadLine();
+
+                    for(int i = 0; i < students.Count; i++)
+
+                    {
+
+                        if(addr_name == students[i].Name)
+
+                        {
+
+                            Console.WriteLine($"{students[i].Id} : {students[i].Name},{students[i].PhoneNum}");
+
+                            Console.WriteLine("진짜 삭제하시겠습니까 [y/n]");
+
+                            if (Console.ReadLine() == "y")
+
+                                students.RemoveAt(i);
+
+                        }
+
+                    }
+
+                }
+
+                else if (num == 3)
+
+                {
+
+                    while (true)
+
+                    {
+
+                        Console.WriteLine("주소록에 저장된 이름을 쓰세요.");
+
+                        addr_name = Console.ReadLine();
+
+                        int index = -1;
+
+                        for (int i = 0; i < students.Count; i++)
+
+                        {
+
+                            if (addr_name == students[i].Name)
+
+                                index = i;
+
+                        }
+
+                        Console.WriteLine("1.이름변경 2.번호변경 3.이름과 번호 변경 4.뒤로가기");
+
+                        num = Int32.Parse(Console.ReadLine());
+
+                        if (num == 1)
+
+                        {
+
+                            addr_name = students[index].Name;
+
+                            Console.WriteLine("바꿀 이름을 써주세요.");
+
+                            addr_chag_name = Console.ReadLine();
+
+                            students[index].Name = addr_chag_name;
+
+                            Console.WriteLine($"{addr_name}이 {addr_chag_name}로 바뀌었습니다.");
+
+                        }
+
+                        if (num == 2)
+
+                        {
+
+                            addr_phone = students[index].PhoneNum;
+
+                            Console.WriteLine("바꿀 번호를 써주세요.");
+
+                            addr_chag_phone = Console.ReadLine();
+
+                            students[index].PhoneNum = addr_chag_phone;
+
+                            Console.WriteLine($"{addr_phone}이 {addr_chag_phone}로 바뀌었습니다.");
+
+                        }
+
+                        if (num == 3)
+
+                        {
+
+                            addr_name = students[index].Name;
+
+                            addr_phone = students[index].PhoneNum;
+
+                            Console.WriteLine("바꿀 이름을 써주세요.");
+
+                            addr_chag_name = Console.ReadLine();
+
+                            students[index].Name = addr_chag_name;
+
+                            Console.WriteLine("바꿀 번호를 써주세요.");
+
+                            addr_chag_phone = Console.ReadLine();
+
+                            students[index].PhoneNum = addr_chag_phone;
+
+                            Console.WriteLine($"{addr_name}이 {addr_chag_name}로 바뀌었습니다.");
+
+                            Console.WriteLine($"{addr_phone}이 {addr_chag_phone}로 바뀌었습니다.");
+
+                        }
+
+                        if (num == 4)
+
+                        {
+
+                            Console.WriteLine("뒤로갑니다.");
+
+                        }
+
+                        else
+
+                        {
+
+                            Console.WriteLine("1~4를 입력하세요");
+
+                        }
+
+                        break;
+
+                    }
+
+                }
+
+                else if (num == 4)
+
+                {
+
+
+
+                    for (int i = 0; i < students.Count; i++)
+
+                    {
+
+
+
+                        Console.WriteLine($"{students[i].Id} : {students[i].Name}, {students[i].PhoneNum}");
+
+                    }
+
+                }
+
+                else if (num == 5)
+
+                {
+
+                    Console.WriteLine("주소록을 끕니다.");
+
+                    break;
+
+                }
+
+                else
+
+                {
+
+                    Console.WriteLine("1 ~ 5의 숫자를 입력하세요.");
+
+                }
+
+            }
+
+        }
+
+        static void Main(string[] args)
+
+        {
+
+            start();
+
+        }
+
+    }
+
+}
