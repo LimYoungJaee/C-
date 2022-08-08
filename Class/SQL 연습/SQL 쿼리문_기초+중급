@@ -1,0 +1,199 @@
+#To_NUMBER 문자데이터를 숫자데이터로
+# '숫자' 문자열형식 = 가능
+select 1300 - '1500', '1300' + 1500 from dual;
+# '숫자 + 문자열' 형식 불가능 ex : '1,300'
+# TO_NUMBER로 -를하면 888,444 - 333,111 = 555333이된다. 이걸 다시 TOCHAR로 555,333 바꾸기
+select TO_CHAR(TO_NUMBER('888,444', '999,999') - TO_NUMBER('333,111', '999,999'), '999,999') from dual;
+
+# 문자 데이터를 날짜 데이터로 변환 TO_DATE
+select TO_DATE('2018-07-04', 'yyyy-mm-dd'), TO_DATE('20180704', 'yyyy-mm-dd'), TO_DATE('0704', 'mm-dd') from dual;
+
+E DB: NULL처리 NVL함수
+# 데이터가 NULL이 아니면 그대로 반환 NULL이면 지정한값으로 
+select empno, ename, sal, comm, sal + comm, NVL(comm,0), sal+nvl(comm,0)
+from emp;
+
+# NVL2함수 지정값 추가
+select comm, sal, NVL2(comm, 'O', 'X') as nvl, NVL2(comm, SAL*12+COMM, SAL*12) as nvl2 from emp;
+
+### DECODE 응용 부분  job이 MANAGER면 1.1 SALESMAN면 1.15 ANALYST면 1 나머지 1.13곱하기.
+select empno, ename, job, sal, decode(job, 'MANAGER', sal*1.1 , 'SALESMAN', sal*1.15, 'ANALYST', sal, sal*1.13)
+from emp;
+
+#연습문제 
+#1 
+select empno, RPAD(substr(empno,1,2),4 , '*')as MASKING_EMPNO, ename, RPAD(substr(ename,1,1),5 , '*')as MASKING_EMPNO
+from emp;
+
+#2 
+select empno, ename, sal, trunc(sal / 21.5, 2) as 일당, round(sal/21.5/8, 1)as 시급
+from emp;
+
+#3
+select  empno, ename, hiredate, TO_CHAR(next_day(add_months(hiredate, 3), '월'), 'yyyy-mm-dd') as R_JOB,
+        NVL(TO_CHAR(comm), 'N/A')as comm
+from emp;
+
+#4
+select empno, ename, mgr,
+        case
+                when mgr is null then '0000'
+                when substr(mgr, 1, 2) = '78' then '8888'
+                when substr(mgr, 1, 2) = '77' then '7777'
+                when substr(mgr, 1, 2) = '76' then '6666'
+                when substr(mgr, 1, 2) = '75' then '5555'
+                else to_char(mgr)
+        end as 변환코드
+from emp;
+
+# 다중행 함수, 데이터 그룹화
+# COUNT, SUM, AVG, MAX, MIN
+select sum(sal),count(sal) from emp;
+# 다중행함수, 단일행함수 같이쓰면안된다.
+select count(sal), ename from emp;
+
+select round(avg(sal),2) from emp;
+
+# 급여의 합계 구하기
+select sum(distinct sal), sum(sal) from emp;
+
+# 부서 번호
+select count(*) from emp where deptno = 30;
+select MAX(sal) from emp where deptno = 20;
+select MIN(sal) from emp where deptno = 10;
+
+# 입사일이 가장 최신일 출력 부서번호가 20
+select max(hiredate) from emp where deptno = 20;
+
+
+# 다중행 함수, 데이터 그룹화
+# COUNT, SUM, AVG, MAX, MIN
+# GROUP BY
+
+select round(avg(sal),2), deptno from emp group by deptno;
+
+select deptno, job, avg(sal) from emp
+group by deptno, job
+order by deptno, job;
+
+# Group by 절에서 조건 (where) 검색
+select deptno, job, avg(sal)
+from emp
+group by deptno, job
+having avg(sal) >= 2000;
+
+# Where과 Having 같이 사용 가능한가?
+#7-23
+select deptno, job, avg(sal) from emp
+where sal <= 3000
+group by deptno, job
+having avg(sal) >= 2000
+order by deptno, job;
+
+# 다중행 함수, 데이터 그룹화
+# COUNT, SUM, AVG, MAX, MIN
+# GROUP BY ( 그룹화 )
+# Having (조건)
+
+# 직업별(job) 연봉
+# 부서별(dept) 연봉 기타 데이터
+# 직업테이블(jobs)로 연습.
+select * from jobs;
+
+#deptno를 먼저 그룹화 한 후 rollup함수에 job 저장하기
+select deptno, job, count(*) from emp
+group by deptno, Rollup(job);
+
+#job을 먼저 그룹화한 후 rollup함수에 deptno 지정하기
+select deptno, job, count(*) from emp
+group by job, Rollup(deptno);
+
+# Grouping set
+# 컬럼별그룹화를통해 결과를 출력함
+select deptno, job, count(*) from emp
+group by GROUPING SETS(deptno, job)
+order by deptno, job;
+
+#7-30 deptno, job 열의 그룹화 결과 여부를 grouping 함수로 확인해 봅시다.
+select deptno, job, count(*), max(sal), sum(sal), round(avg(sal),2),
+    GROUPING(deptno),
+    GROUPING(job)
+from emp
+group by rollup(deptno, job);
+
+#7-31
+select decode(grouping(deptno), 1, 'ALL_DEPT', deptno) 부서번호,
+        decode(grouping(job), 1, 'ALL_JOB', job) 직업,
+        count(*), max(sal)
+from emp
+group by cube(deptno, job)
+order by deptno, job;
+
+#7-32 Grouping_id
+
+#LISTAGG 함수 - 오라클11g이후 지원
+#그룹에 속해있는 데이터를 가로로 나열하기 위해
+#부서별 사원 이름을 가로로 나열
+select deptno, LISTAGG(ename, ', ') WITHIN GROUP(order by sal desc) 
+from emp
+group by deptno;
+
+#실력을 업그레이드 해주는 함수
+#PIVOT
+
+# 부서별, 직책별 그룹화 최고 급여 데이터 출력
+select deptno, job, max(sal) from emp
+group by deptno, job
+order by deptno, job;
+
+select * from (select deptno, job, sal from emp)
+        PIVOT(MAX(sal) FOR DEPTNO IN (10, 20, 30))
+order by job;
+
+#PIVOT 함ㅅ를 사용하여 부서별, 직책별 최고 급여를 2차원 표 형태로 출력하기
+select *
+from (select job, deptno, sal from emp)
+pivot(max(sal) for job in ('CLERK' as CLERK,
+                            'SALESMAN' as SALESMAN,
+                            'PRESIDENT' as PRESIDENT,
+                            'MANAGER' as MANAGER,
+                            'ANALYST' as ANALYST)
+    )
+order by deptno;
+
+# DECODE 문을 활용하여 PIVOT 구현
+select deptno, MAX(DECODE(JOB, 'CLERK', sal)) as 점원,
+                MAX(DECODE(JOB, 'SALESMAN', sal)) as 판매원
+from emp
+group by deptno;
+
+
+#p212 연습문제
+#1
+select DEPTNO, FLOOR(AVG(sal)) as AVG_SAL, MAX(SAL) as MAX_SAL, MIN(sal) as MIN_SA, count(deptno) as CNT
+from emp
+Group by deptno;
+
+#2
+select JOB, COUNT(*)
+from emp
+Group by JOB
+having count(job) >= 3;
+
+#3
+select * from emp;
+select TO_CHAR(HIREDATE, 'yyyy') as HIRE_YEAR, DEPTNO, count(deptno) as CNT
+from emp
+Group by TO_CHAR(HIREDATE, 'yyyy'),deptno;
+
+#4
+select NVL2(comm,'O','X')as EXIST_COMM, count(*) as CNT 
+from emp
+group by NVL2(comm,'O','X');
+
+#5
+select DEPTNO,TO_CHAR(hiredate,'yyyy')as HIRE_YEAR, count(*) as CNT ,max(sal) as MAX_SAL ,sum(sal) as SUM_SAL,
+                round(avg(sal),11)as AVG_SAL 
+from emp 
+group by ROLLUP(deptno,to_char(hiredate,'yyyy'))
+order by deptno;
