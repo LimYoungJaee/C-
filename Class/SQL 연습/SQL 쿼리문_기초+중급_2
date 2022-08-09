@@ -1,0 +1,97 @@
+#Join
+#Table1 (EMP) DEPTNO가 있다
+select * from emp;
+#Table2 (DEPT)
+select * from dept; DEPTNO 가 있다
+
+# 기본 조인 - 더하기가 아니라 곱하기개념
+#8-1 실습  => 14 / 4 라서 56
+select * from dept, emp;
+
+# 실질적 조인 => 겹치는 부분 더하기
+select * from dept, emp
+where emp.deptno = dept.deptno
+order by empno;
+
+# 조인 활용
+select empno, ename, dname from dept, emp
+where emp.deptno = dept.deptno
+order by empno;
+
+select emp.deptno, ename, job, hiredate, dname, loc from emp, dept
+where emp.deptno = dept.deptno
+order by empno;
+
+# 8-3 테이블 이름을 별칭으로 표현하기
+select * from emp e, dept d
+where e.deptno = d.deptno
+order by empno;
+
+# 급여(sal)가 2000 초과인 사원들의 부서정보 사원정보를 #P239 1번문제
+        # 1번
+        select e.DEPTNO, DNAME, EMPNO, ENAME, SAL 
+        from emp e, dept d
+        where e.deptno = d.deptno and sal > 2000
+        order by e.deptno;
+        
+        # 2번
+        select D.DEPTNO, D.DNAME, round(AVG(E.SAL)) as AVG_SAL, MAX(E.SAL) as MAX_SAL, MIN(E.SAL) as MIN_SAL, count(*) as CNT
+        from dept D, emp E
+        where E.deptno = D.deptno
+        group by D.DEPTNO, D.DNAME;
+        
+        # 3번
+        select D.DEPTNO, D.DNAME, E.EMPNO, E.ENAME, E.JOB, E.SAL
+        from EMP E ,DEPT D
+        where E.DEPTNO(+) = D.DEPTNO
+        order by D.DEPTNO, E.ENAME;
+        
+        # 4번
+        select  d.deptno, d.dname,
+                e.empno, e.ename, e.mgr, e.sal, e.deptno,
+                s.losal, s.hisal, s.grade,
+                e2.empno, e2.ename
+        from emp e, dept d, salgrade s, emp e2
+        where   e.deptno(+) = d.deptno
+                and e.sal >= s.losal(+) and e.sal <= s.hisal(+)
+                and e.mgr = e2.empno(+)
+        order by d.deptno, d.dname;
+
+# SubQuery
+# 사원 이름이 Jones인 사원의 급여를 출력해 봅시다
+select sal from emp where ename = 'JONES';
+# 급여가 2975(JONES보다) 높은 금액을 받는 사원정보를 출력
+select * from emp where (select sal from emp where ename = 'JONES') < sal;]
+# EMP 테이블 사원 이름이 ALLEN 인 사원의 추가수당(comm)보다 많이 받는 사원들은 누구인가요?
+select * from emp where(select comm from emp where ename = 'ALLEN') < comm;
+
+#실행 결과가 하나인 단일행 서브쿼리
+select hiredate from emp where ename = 'SCOTT';
+#scott보다 일찍 입사한 사원은?
+select * from emp where hiredate < (select hiredate from emp where ename = 'SCOTT')
+order by hiredate, ename;
+
+# 조인과 서브쿼리를 함께 사용
+select  e.empno, e.ename, e.job, e.sal,  
+        d.deptno, d.dname, d.loc
+from emp e, dept d
+where   e.deptno = d.deptno
+        and e.deptno = 20
+        and e.sal > (select trunc(avg(sal)) from emp);
+
+# 9-3 실행 결과가 여러 개인 다중행 서브 쿼리
+# IN 연산자
+select * from emp where deptno in(10, 20);
+# 각 부서별 최고 급여와 동일한 급여를 받는 사원 정보 출력하기.
+select * from emp
+where sal in( select max(sal) from emp group by deptno);
+
+# ANY
+# 부서별 최고 급여
+select max(sal) from emp group by deptno;
+# 부서별 최고급여를 받는 사원정보
+select * from emp
+where sal = ANY(select max(sal) from emp group by deptno);
+#SOME
+select * from emp
+where sal = SOME(select max(sal) from emp group by deptno);
