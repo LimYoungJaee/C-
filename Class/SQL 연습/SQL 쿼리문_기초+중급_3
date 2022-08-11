@@ -1,0 +1,340 @@
+# SQL-99
+# 8-11
+SELECT E.EMPNO, E.ENAME, E.JOB, E.MGR, E.HIREDATE, E.SAL, E.COMM, DEPTNO, D.DNAME, D.LOC FROM EMP E NATURAL JOIN DEPT D ORDER BY DEPTNO, E.EMPNO;
+
+# 9-13 30번 부서 사원들의 최소 급여보다 많은 급여를 받는 사원 정보 출력
+#1
+SELECT SAL FROM EMP WHERE DEPTNO = 30;
+#2
+SELECT * FROM EMP WHERE SAL > ALL(SELECT SAL FROM EMP WHERE DEPTNO = 30);
+
+# 9-16
+#1
+SELECT DNAME FROM DEPT WHERE DEPTNO = 10;
+SELECT * FROM DEPT;
+#2
+SELECT * FROM EMP WHERE EXISTS (SELECT DNAME FROM DEPT WHERE DEPTNO = 10); ## TRUE이면 전체 출력, FASLE이면 출력안함
+
+# 9-4 다중열 서브쿼리 (**) - 중요
+#1
+SELECT DEPTNO, MAX(SAL) FROM EMP GROUP BY DEPTNO;
+#2
+SELECT * FROM EMP WHERE (DEPTNO, SAL) IN (SELECT DEPTNO, MAX(SAL) FROM EMP GROUP BY DEPTNO);
+
+#9-5 인라인 뷰(INLINE VIEW) ==> FROM절에서 사용하는 서브 쿼리
+SELECT E10.EMPNO, E10.ENAME, E10.DEPTNO, D.DNAME, D.LOC FROM (SELECT * FROM EMP WHERE DEPTNO = 10) E10, (SELECT * FROM DEPT) D WHERE E10.DEPTNO = D.DEPTNO;
+
+# WITH절 사용하기
+# 테이블 내 규모가 너무 크거나 현재 작업에서 불필요한 컬럼이 많아서 일부 행과 열만 사용하고자 할때
+WITH E10 AS (SELECT * FROM EMP WHERE DEPTNO = 10), D AS (SELECT * FROM DEPT)
+SELECT E10.EMPNO, E10.ENAME, E10.DEPTNO, D.DNAME, D.LOC FROM E10, D WHERE E10.DEPTNO = D.DEPTNO;
+
+# SELECT절에서 서브쿼리 사용가능
+#1
+SELECT GRADE FROM SALGRADE;
+#2
+SELECT EMPNO, ENAME, JOB, SAL, (SELECT GRADE FROM SALGRADE WHERE E.SAL BETWEEN LOSAL AND HISAL), DEPTNO, (SELECT DNAME FROM DEPT WHERE E.DEPTNO = DEPT.DEPTNO) FROM EMP E;
+
+# 테이블 조작어
+CREATE TABLE DEPT_TEMP AS SELECT * FROM DEPT;
+
+# 삽입
+INSERT INTO DEPT_TEMP (DEPTNO, DNAME, LOC) VALUES (50, 'DATABASE', 'SEOUL');
+INSERT INTO DEPT_TEMP (DEPTNO, DNAME, LOC) VALUES (70, 'WEB', NULL);
+
+# 삭제
+DELETE FROM DEPT_TEMP WHERE DEPTNO = 50;
+
+# 테이블 구조만 복사
+CREATE TABLE DEPT_TEMP AS SELECT * FROM DEPT WHERE 1 <> 1;
+
+# 10-10
+INSERT INTO EMP_TEMP (EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO)
+VALUES (1111, '성춘향', 'MANAGER', 9999, '2001-01-05', 4000, NULL, 20);
+
+# 10-12
+INSERT INTO EMP_TEMP (EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO)
+VALUES (2111, '이순신', 'MANAGER', 9999, TO_DATE('07/01/2001', 'DD/MM/YYYY'), 4000, NULL, 20);
+
+# UPDATE (WHERE 조건이 거의 항상 있음)
+UPDATE DEPT_TEMP2 SET LOC = 'SEOUL' WHERE DEPTNO = 20;
+SELECT * FROM DEPT_TEMP2;
+
+# 방금 수행한 작업을 되돌려줌
+ROLLBACK;
+
+CREATE TABLE DEPT_TEMP2 AS SELECT * FROM DEPT;
+
+# 10 - 18
+# 하나 이상의 데이터를 수정해봅시다.
+UPDATE DEPT_TEMP2
+    SET DNAME = 'DATEBASE',
+        LOC = 'SEOUL'
+WHERE DEPTNO = 40;
+
+select * from dept_temp2;
+
+# 급여가 $2500 이하인 사원은 추가수당(comm)을 $50으로 수정해주세요. EMP_TEMP테이블
+UPDATE EMP_TEMP
+    SET comm = 50
+WHERE SAL <= 2500;
+
+select * from emp_temp;
+
+#10 - 19
+#1
+select DNAME, LOC FROM DEPT WHERE DEPTNO = 40;
+#2
+update dept_temp2
+    set (DNAME, LOC) = (select dname, loc from dept 
+    where deptno=40)
+where deptno = 40;
+
+select * from dept_temp2;
+
+# 287 연습문제
+CREATE TABLE CHAP10HW_EMP AS SELECT * FROM EMP;
+CREATE TABLE CHAP10HW_DEPT AS SELECT * FROM DEPT;
+CREATE TABLE CHAP10HW_SALGRADE AS SELECT * FROM SALGRADE;
+
+#1 
+INSERT INTO CHAP10HW_DEPT (deptno, dname, loc) values (50, 'ORACLE', 'BUSAN');
+INSERT INTO CHAP10HW_DEPT (deptno, dname, loc) values (60, 'SQL', 'ILSAN');
+INSERT INTO CHAP10HW_DEPT (deptno, dname, loc) values (70, 'SELECT', 'INCHEON');
+INSERT INTO CHAP10HW_DEPT (deptno, dname, loc) values (80, 'DML', 'BUNDANG');
+
+select * from CHAP10HW_DEPT;
+
+#2 
+INSERT INTO CHAP10HW_EMP (empno, ename, job, mgr, hiredate, sal, deptno) values (7201, 'TEST_USER1', 'MANAGER', 7788, '2016-01-02', 4500, 50);
+INSERT INTO CHAP10HW_EMP values (7204, 'TEST_USER4', 'SALESMAN', 7201, '2016-05-31', 2700, 300, 60);
+
+select * from CHAP10HW_EMP order by empno;
+
+#3
+update CHAP10HW_EMP
+    set deptno = 70
+where sal > (select AVG(sal) from CHAP10HW_EMP where deptno = 50);
+
+select * from CHAP10HW_EMP;
+
+#4 
+update CHAP10HW_EMP
+    set (sal, deptno) = (select sal * 1.1, 80 from CHAP10HW_EMP)
+where hiredate > (select all hiredate from CHAP10HW_EMP where deptno = 60);
+
+where hiredate > (select nim(hiredate) from CHAP10HW_EMP where deptno = 60);
+#5
+delete from CHAP10HW_EMP
+where ename in (select CHAP10HW_EMP.ename from CHAP10HW_EMP, CHAP10HW_SALGRADE 
+                where CHAP10HW_EMP.sal between CHAP10HW_SALGRADE.losal and CHAP10HW_SALGRADE. hisal and CHAP10HW_SALGRADE.grade = 5);
+
+select * from CHAP10HW_EMP;
+# 방금한 작업 돌리기
+ROLLBACK;
+
+# 11장 트랜잭션
+#DEPT ==> DETP_TCL
+CREATE TABLE DEPT_TCL AS SELECT * FROM DEPT;
+
+select * from dept_tcl;
+
+# 삽입
+INSERT INTO DEPT_TCL VALUES (50, 'DATABASE', 'SEOUL');
+# 수정
+UPDATE DEPT_TCL SET LOC = 'BUSAN' WHERE DEPTNO = 40;
+# 삭제
+DELETE FROM DEPT_TCL WHERE DNAME = 'RESEARCH';
+# 검색
+SELECT * FROM DEPT_TCL;
+
+# ROLLBACK = commit 전까지 돌려줌
+ROLLBACK;
+# 파일에 저장
+COMMIT;
+
+# 12장 데이터 정의어
+# 12 - 1
+CREATE TABLE EMP_DDL (
+    EMPNO        NUMBER(4),
+    ENAME        VARCHAR(10),
+    JOB          VARCHAR(9),
+    MGR          NUMBER(4),
+    HIREDATE     DATE,
+    SAL          NUMBER(7,2),
+    COMM         NUMBER(7,2),
+    DEPTNO       NUMBER(2)
+);
+
+select * from emp_ddl;
+
+# 12-4 테이블의 부분만 복사하여 새 테이블 만들기
+CREATE TABLE EMP_DDL_30
+    AS SELECT * FROM EMP
+       WHERE DEPTNO = 30;
+       
+select * from emp_ddl_30;
+
+# 테이블을 변경하는 ALTER
+CREATE TABLE EMP_ALTER AS SELECT * FROM EMP;
+
+select * from EMP_ALTER;
+
+# 열(컬럼)을 추가해 봅시다.
+ALTER TABLE EMP_ALTER
+ ADD HP VARCHAR2(20);
+ 
+#HP --> TEL
+#RENAME COLUMN TO
+ALTER TABLE EMP_ALTER
+    RENAME COLUMN HP TO TEL;
+    
+select * from emp_alter;
+
+# comm --> bonus
+ALTER TABLE EMP_ALTER
+    RENAME COLUMN comm To bonus;
+    
+select * from emp_alter;
+
+# 컬럼의 자료형 변경 ==> 컬럼의 형변환
+#MODIFY
+DESC EMP_ALTER;
+# 데이터가 있으면 5 -> 4처럼 아래로는 불가능
+ALTER TABLE EMP_ALTER
+MODIFY EMPNO NUMBER(5);
+
+# 컬럼 삭제 DROP COLUMN
+ALTER TABLE EMP_ALTER
+DROP COLUMN TEL;
+
+select * from emp_alter;
+
+# 테이블 이름 변경 RENAME
+#RENAME A TO B
+RENAME EMP_ALTER TO EMP_RENAME;
+
+select * from EMP_RENAME;
+
+# 테이블 구조만 남기고 전체 데이터 삭제
+#TRUNCATE TABLE
+TRUNCATE TABLE EMP_RENAME;
+select * from emp_rename;
+
+desc emp_rename;
+# 데이터가 없다며 5 -> 4로 가능
+ALTER TABLE EMP_RENAME
+MODIFY EMPNO NUMBER(4);
+
+# 324P 연습문제
+# 1
+CREATE TABLE EMP_HW (
+    EMPNO        NUMBER(4),
+    ENAME        VARCHAR(10),
+    JOB          VARCHAR(9),
+    MGR          NUMBER(4),
+    HIREDATE     DATE,
+    SAL          NUMBER(7,2),
+    COMM         NUMBER(7,2),
+    DEPTNO       NUMBER(2)
+);
+
+# 2
+ALTER TABLE EMP_HW
+ADD BIGO VARCHAR2(20);
+
+# 3
+ALTER TABLE EMP_HW
+MODIFY BIGO VARCHAR2(30);
+
+# 4
+ALTER TABLE EMP_HW
+RENAME COLUMN BIGO TO REMARK;
+
+# 5
+INSERT INTO EMP_HW(EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO) SELECT * FROM EMP;
+
+# 6
+DROP TABLE EMP_HW;
+
+## 규칙에 맞는 순번을 생성하는 작업 ==> 시퀀스
+#13-26
+#DEPT 테이블을 사용하여 DEPT_SEQUENCE 테이블
+CREATE TABLE DEPT_SEQUENCE
+ AS SELECT * FROM DEPT WHERE 1<>1;
+ 
+select * from dept_sequence;
+#SEQUENCE 만들기
+CREATE SEQUENCE SEQ_DEPT_SEQUENCE
+  INCREMENT BY 10   
+  START WITH 10     
+  MAXVALUE 90       
+  MINVALUE 0        
+  CACHE 2;
+ 
+# 생성한 시퀀스 쿼리로 확인하기
+SELECT * FROM USER_SEQUENCES;
+
+SELECT * FROM DEPT_SEQUENCE;
+#13-29 시퀀스를 이용한 데이터 삽입
+INSERT INTO DEPT_SEQUENCE (DEPTNO, DNAME, LOC)
+VALUES (SEQ_DEPT_SEQUENCE.NEXTVAL, 'DATABASE', 'SEOUL');
+
+#가장 마지막으로 생성된 시퀀스 버호 확인하기
+select SEQ_DEPT_SEQUENCE.CURRVAL from dual;
+
+#시퀀스 옵션 수정
+ALTER SEQUENCE SEQ_DEPT_SEQUENCE
+    INCREMENT BY 3
+    MAXVALUE 65
+    CYCLE;
+    
+# 시퀀스 수정
+select * from USER_SEQUENCES;
+
+# 시퀀스 삭제
+drop SEQUENCE SEQ_DEPT_SEQUENCE;
+
+select * from tab;
+
+#hr 계정에 권한을 부여
+#동의어를 만들수 있는 권한
+GRANT CREATE SYNONYM TO HR;
+GRANT CREATE PUBLIC SYNONYM TO HR;
+
+#동의어 생성
+#EMMP 테이블 동의어 생성
+CREATE SYNONYM E FOR EMP;
+
+select * from E;
+    
+
+#제약
+#UNIQUE, PRIMARY KEY, FOREIGN KEY
+
+#테이블 생성 제약
+#14-1
+CREATE TABLE TABLE_NOTNULL(
+    LOGIN_ID VARCHAR2(20) NOT NULL,
+    LOGIN_PWD VARCHAR2(20) NOT NULL,
+    TEL       VARCHAR2(20)
+);
+
+#14-2
+INSERT INTO TABLE_NOTNULL (LOGIN_ID, LOGIN_PWD, TEL)
+VALUES ('TEST_ID_01', NULL, '010-1234-5678');
+
+#14-3
+INSERT INTO TABLE_NOTNULL (LOGIN_ID, LOGIN_PWD)
+VALUES ('TEST_ID_01', '1234');
+
+select * from table_notnull;
+
+#14-4
+UPDATE TABLE_NOTNULL
+  SET LOGIN_PWD = NULL;
+WHERE LOGIN_ID = 'TEST_ID_01';
+    
+    
+SELECT * FROM (SELECT ENAME, LENGTH(ENAME) FROM EMP WHERE LENGTH(ENAME) = (SELECT MIN(LENGTH(ENAME)) FROM EMP) ORDER BY ENAME) WHERE ROWNUM = 1;
+SELECT * FROM (SELECT ENAME, LENGTH(ENAME) FROM EMP WHERE LENGTH(ENAME) = (SELECT MAX(LENGTH(ENAME)) FROM EMP) ORDER BY ENAME) WHERE ROWNUM = 1; 
