@@ -1,0 +1,180 @@
+# 지점
+CREATE TABLE Branch (
+    Branch_Id       NUMBER(3) PRIMARY KEY,
+    Branch_Name     VARCHAR2(20) NOT NULL,
+    Branch_Pw       VARCHAR2(20) NOT NULL
+);
+
+# 재고
+CREATE TABLE Inventory(
+    Branch_Id   NUMBER(3) PRIMARY KEY,
+    Rice        NUMBER(4),
+    Toti        NUMBER(4),
+    Veg         NUMBER(4),
+    Chi         NUMBER(4),
+    Cow         NUMBER(4),
+    Ten         NUMBER(4),
+    HotS        NUMBER(4),
+    NomS        NUMBER(4),
+    MildS       NUMBER(4),
+    PotPlus     NUMBER(4),
+    Pot         NUMBER(4),
+    Che         NUMBER(4),
+    Sausage     NUMBER(4),
+    Cola        NUMBER(4)
+);
+
+
+# 주문리스트 - 주문번호, 주문일, (사용량 / NULL), 금액
+CREATE TABLE Order_List(
+    Order_Num   NUMBER(4) PRIMARY KEY,
+    Branch_Id   NUMBER(3) REFERENCES Branch (Branch_Id) ON DELETE SET NULL,
+    Sales_Date  DATE,
+    Rice        NUMBER(1),
+    Toti        NUMBER(1),
+    Veg         NUMBER(1),
+    Chi         NUMBER(1),
+    Cow         NUMBER(1),
+    Ten         NUMBER(1),
+    HotS        NUMBER(1),
+    NomS        NUMBER(1),
+    MildS       NUMBER(1),
+    PotPlus     NUMBER(1),
+    Pot         NUMBER(1),
+    Che         NUMBER(1),
+    Sausage     NUMBER(1),
+    Cola        NUMBER(1)
+);
+
+# 주문번호에 따른 가격
+CREATE TABLE Price(
+    Order_Num   NUMBER(3) PRIMARY KEY REFERENCES Order_List (Order_Num) ON DELETE SET NULL,
+    Sales_Date  Date,
+    price       NUMBER(10)
+);
+
+# 일일 판매합
+CREATE TABLE Sales(
+    Branch_Id NUMBER(3) REFERENCES Branch (Branch_Id) ON DELETE SET NULL,
+    Sales_Date Date PRIMARY KEY,
+    Sales_Ttotal NUMBER(10)
+);
+
+# 1씩증가 지점 시퀀스
+CREATE SEQUENCE SEQ_Burrito_Branch
+  INCREMENT BY 1  
+  START WITH 0     
+  MAXVALUE 1000       
+  MINVALUE 0        
+  CACHE 2;
+  
+# 1씩증가 주문 시퀀스
+CREATE SEQUENCE SEQ_Burrito_Order
+  INCREMENT BY 1  
+  START WITH 1     
+  MAXVALUE 1000       
+  MINVALUE 0        
+  CACHE 2;
+  
+# 지점넣기
+INSERT INTO Branch (Branch_Id, Branch_Name, Branch_Pw)
+VALUES (SEQ_Burrito_Branch.NEXTVAL, '안동', 'andong');
+
+INSERT INTO Branch (Branch_Id, Branch_Name, Branch_Pw)
+VALUES (SEQ_Burrito_Branch.NEXTVAL, '서울', 'seoul');
+
+# 재고
+INSERT INTO Inventory VALUES (1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+INSERT INTO Inventory VALUES (2, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+
+---------------------- 주문
+# 닭브리또 매운맛
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-12', 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO Price VALUES (SEQ_Burrito_Order.CURRVAL,'2022-08-12', 3500);
+
+# 소브리또 순한맛 감자추가
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-12', 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0);
+INSERT INTO Price VALUES ((select max(order_num) from price)+1,'2022-08-12', 4500);
+
+# 텐더브리또 순한맛 세트
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-12', 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1);
+
+# 텐더브리또 순한맛
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-12', 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0);
+
+# 닭 브리또 매운맛 세트
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-13', 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1);
+
+# 소 브리또 보통맛 세트
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-13', 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1);
+
+# 텐더 브리또 매운맛
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-13', 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+
+# 닭 브리또 순한맛 세트
+INSERT INTO Order_List VALUES (SEQ_Burrito_Order.NEXTVAL, 1, '2022-08-13', 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1);
+
+
+select max(order_num) from price;
+select * from Inventory;
+select * from Order_list;
+select * from Price;
+update Inventory set rice = rice-1 where Branch_Id = 1;
+delete from Order_list;
+
+select (rice * 1000 + toti * 500 + veg * 500 + chi * 1000 + cow * 1500 + ten * 1500 + potplus * 500 + pot * 1500 + che * 500 + sausage * 1000 + cola * 1000) 
+from order_list  where order_num = (select max(order_num) from price)+1;
+
+
+select SEQ_Burrito_Order.CURRVAL from dual;
+select * from order_list;
+select  sum(rice) from order_list;
+select  sum(order_num) from order_list;
+select * from Inventory where Branch_Id = 1;
+
+commit;
+rollback;
+
+--------------------------------------------
+-- 마지막 주문 가격 계산하기.
+select (rice * 1000 + toti * 500 + veg * 500 + chi * 1000 + cow * 1500 + 
+        ten * 1500 + potplus * 500 + pot * 1500 + che * 500 + 
+        sausage * 1000 + cola * 1000) as price
+from order_list  where order_num = (select max(order_num) from price)+1;
+
+-- Price에 넣기. 번호 / 날짜 / 가격
+INSERT INTO Price VALUES (
+(select max(order_num) from price)+1,
+(select max(Sales_Date) from order_list) ,
+(select (rice * 1000 + toti * 500 + veg * 500 + chi * 1000 + cow * 1500 + 
+        ten * 1500 + potplus * 500 + pot * 1500 + che * 500 + 
+        sausage * 1000 + cola * 1000)
+from order_list  where order_num = (select max(order_num) from price)+1));
+
+-- 날짜별로 매출보기
+select Sales_Date, sum(price) as 총매출 
+from price 
+group by Sales_Date;
+
+
+-- 날짜별 매출 값 넣기 (마지막 주문 이후에)
+INSERT INTO Sales VALUES(
+1, 
+'2022-08-13',
+(select sum(price)
+from price 
+where Sales_Date = '2022-08-13')
+);
+
+delete from sales where sales_date = '22-08-13');
+update sales set sales_ttotal = 20500 where sales_date = '22-08-13';
+select * from sales;
+
+
+
+# 일일 판매합
+CREATE TABLE Sales(
+    Branch_Id NUMBER(3) REFERENCES Branch (Branch_Id) ON DELETE SET NULL,
+    Sales_Date Date PRIMARY KEY,
+    Sales_Ttotal NUMBER(10)
+);
