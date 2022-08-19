@@ -1,0 +1,77 @@
+# 지점
+CREATE TABLE Branch (
+    Branch_Id       NUMBER(3) PRIMARY KEY,
+    Branch_Name     VARCHAR2(20) NOT NULL,
+    Branch_Pw       VARCHAR2(20) NOT NULL
+);
+
+# 재고
+CREATE TABLE Inventory(
+    Branch_Id   NUMBER(3) PRIMARY KEY,
+    Rice        NUMBER(4),
+    Toti        NUMBER(4),
+    Veg         NUMBER(4),
+    Chi         NUMBER(4),
+    Cow         NUMBER(4),
+    Ten         NUMBER(4),
+    HotS        NUMBER(4),
+    NomS        NUMBER(4),
+    MildS       NUMBER(4),
+    PotPlus     NUMBER(4),
+    Pot         NUMBER(4),
+    Che         NUMBER(4),
+    Sausage     NUMBER(4),
+    Cola        NUMBER(4)
+);
+
+# 주문리스트 - 주문번호, 주문일, (사용량 / NULL), 금액
+CREATE TABLE Order_List(
+    Order_Num   NUMBER(4) PRIMARY KEY,
+    Branch_Id   NUMBER(3) REFERENCES Branch (Branch_Id) ON DELETE SET NULL,
+    Sales_Date  DATE,
+    Rice        NUMBER(1),
+    Toti        NUMBER(1),
+    Veg         NUMBER(1),
+    Chi         NUMBER(1),
+    Cow         NUMBER(1),
+    Ten         NUMBER(1),
+    HotS        NUMBER(1),
+    NomS        NUMBER(1),
+    MildS       NUMBER(1),
+    PotPlus     NUMBER(1),
+    Pot         NUMBER(1),
+    Che         NUMBER(1),
+    Sausage     NUMBER(1),
+    Cola        NUMBER(1)
+);
+
+# 주문번호에 따른 가격
+CREATE TABLE Price(
+    Order_Num   NUMBER(3) PRIMARY KEY REFERENCES Order_List (Order_Num) ON DELETE SET NULL,
+    Sales_Date  Date,
+    price       NUMBER(10)
+);
+
+# 일일 판매합
+CREATE TABLE Sales(
+    Branch_Id NUMBER(3) REFERENCES Branch (Branch_Id) ON DELETE SET NULL,
+    Sales_Date Date PRIMARY KEY,
+    Sales_Ttotal NUMBER(10)
+);
+
+# 1씩증가 지점 시퀀스
+CREATE SEQUENCE SEQ_Burrito_Branch
+  INCREMENT BY 1  
+  START WITH 0     
+  MAXVALUE 1000       
+  MINVALUE 0        
+  CACHE 2;
+
+# 1씩증가 주문 시퀀스
+CREATE SEQUENCE SEQ_Burrito_Order
+  INCREMENT BY 1  
+  START WITH 1     
+  MAXVALUE 1000       
+  MINVALUE 0        
+  CACHE 2;
+
